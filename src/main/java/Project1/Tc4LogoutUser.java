@@ -2,11 +2,15 @@ package Project1;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.LoginPageTc2;
+import PageFiles.MainPage;
 
 public class Tc4LogoutUser {
 	private WebDriver driver;
@@ -22,7 +26,7 @@ public class Tc4LogoutUser {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void LogoutUserTest() throws InterruptedException {
+	public void LogoutUserTest(){
 		mainPage.navigateToHomePage("https://automationexercise.com/");
 
 		Assert.assertTrue(mainPage.isHomePageVisible());
@@ -36,9 +40,12 @@ public class Tc4LogoutUser {
 	    loginPage.clickLoginButton();
 
 	//Verify that 'Logged in as username' is visible
-		System.out.println("User name is visible:"+driver.findElement(By.xpath("//*[text()=' Logged in as ']")).isDisplayed());
+		WebElement LoggedUsernameVisible=driver.findElement(By.xpath("//*[text()=' Logged in as ']"));
+		Assert.assertTrue(LoggedUsernameVisible.isDisplayed(),"Logged as username Not visible");
 		loginPage.clickLogOutButton();
-//		Verify that user is navigated to login page		
+
+		
+		//		Verify that user is navigated to login page		
 	System.out.println("Navigated to:"+loginPage.loginToYourAccountVisible());	
 
 	}

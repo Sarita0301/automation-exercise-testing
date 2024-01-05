@@ -15,6 +15,9 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import PageFiles.MainPage;
+import PageFiles.SignupPAge;
+
 public class Tc15PlaceOrderRegisterBeforeCheckout {
 	private WebDriver driver;
 	private MainPage mainPage;
@@ -26,20 +29,22 @@ public class Tc15PlaceOrderRegisterBeforeCheckout {
 		mainPage = new MainPage(driver);
 		signupPage = new SignupPAge(driver);
 		mainPage.navigateToHomePage("https://automationexercise.com/");
-		System.out.println(driver.getTitle());
+	
 	}
 	@Test
-	public void registerUserTest() throws InterruptedException {
-		mainPage.navigateToHomePage("https://automationexercise.com/");
+	public void registerUserTestbeforecheckout() {
+		
+		String expectedHomePageTitle="Automation Exercise";
+		String ActualHomePageTitle= driver.getTitle();
+		Assert.assertEquals(ActualHomePageTitle,expectedHomePageTitle,"Home Page not visible");
 
-		Assert.assertTrue(mainPage.isHomePageVisible());
-
+		
 		mainPage.clickSignupLoginButton();
 		Assert.assertTrue(signupPage.isNewUserSignupVisible());
 
 
 		// Fill out the signup form
-		signupPage.enterNameAndEmail("Seema", "Seema13@gmail.com");
+		signupPage.enterNameAndEmail("Seema1", "Seema131@gmail.com");
 		signupPage.clickSignupButton();
 
 		//Verify that 'ENTER ACCOUNT INFORMATION' is visible
@@ -65,7 +70,7 @@ public class Tc15PlaceOrderRegisterBeforeCheckout {
 		driver.findElement(By.xpath("//input[@id='mobile_number']")).sendKeys("12334432");
 		driver.findElement(By.xpath("//button[@type='submit' and text()]")).click();
 
-		Thread.sleep(3000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 
 		//Verify 'ACCOUNT CREATED!' and click 'Continue' button
 
@@ -74,12 +79,8 @@ public class Tc15PlaceOrderRegisterBeforeCheckout {
 
 		//Verify ' Logged in as username' at top
 		WebElement loggedInUserName=driver.findElement(By.xpath("/html/body/header/div/div/div/div[2]/div/ul/li[10]/a"));
-		if(loggedInUserName.isDisplayed()) {
-			System.out.println("Logged In as UserName is visible");
-		}
-		else {
-			System.out.println("Logged In as UserName Not Visible");
-		}
+		Assert.assertTrue(loggedInUserName.isDisplayed(),"Logged In as UserName Not Visible");
+		
 		//1st product Add to Cart
 		driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[1]/a")).click();
 
@@ -95,12 +96,8 @@ public class Tc15PlaceOrderRegisterBeforeCheckout {
 
 		//Verify that cart page is displayed
 		WebElement CartPage= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='active']")));
-		if (CartPage.isDisplayed()) {
-			System.out.println("Cart page is displayed");
-		} else {
-			System.out.println("Cart page is Not displayed");
-		}
-
+		Assert.assertTrue (CartPage.isDisplayed(),"Cart page is Not displayed");
+		
 		driver.findElement(By.xpath("//a[@class='btn btn-default check_out']")).click();
 
 
@@ -138,23 +135,12 @@ public class Tc15PlaceOrderRegisterBeforeCheckout {
 
 		//Verify success message 'Your order has been placed successfully!'
 		WebElement OrderSuccessMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Congratulations! Your order has been confirmed!']")));
-		if (OrderSuccessMessage.isDisplayed()) {
-			System.out.println("Success message 'Your order has been placed successfully!' is visible");
-		} else {
-			System.out.println("Success message is not visible");
-		}	
-
-
+		Assert.assertTrue(OrderSuccessMessage.isDisplayed(),"Success message is not visible");
+		
 		driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
 
 		WebElement DeleteMessage=driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div"));
-		if(DeleteMessage.isDisplayed()) {
-			System.out.println("ACCOUNT DELETED!");
-		}
-		else {
-			System.out.println("ACCOUNT DELETED! not visible");
-		}
-
+		Assert.assertTrue(DeleteMessage.isDisplayed(),"ACCOUNT DELETED! not visible");
 
 		//click 'Continue' button
 		driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();

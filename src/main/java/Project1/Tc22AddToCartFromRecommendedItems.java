@@ -15,6 +15,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import PageFiles.MainPage;
+
 public class Tc22AddToCartFromRecommendedItems {
 	private WebDriver driver;
 	private MainPage mainPage;

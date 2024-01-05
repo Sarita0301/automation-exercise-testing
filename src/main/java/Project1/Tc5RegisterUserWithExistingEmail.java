@@ -1,5 +1,7 @@
 package Project1;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,6 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
+import PageFiles.SignupPAge;
 
 public class Tc5RegisterUserWithExistingEmail {
 	private WebDriver driver;
@@ -22,7 +27,7 @@ public class Tc5RegisterUserWithExistingEmail {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void registerUser() throws InterruptedException {
+	public void registerUserwithEmail() {
 		mainPage.navigateToHomePage("https://automationexercise.com/");
 
 		Assert.assertTrue(mainPage.isHomePageVisible());
@@ -37,7 +42,7 @@ public class Tc5RegisterUserWithExistingEmail {
 
 		//Verify error 'Email Address already exist!' is visible
 		System.out.println("Error is visible:"+driver.findElement(By.xpath("//*[text()='Email Address already exist!']")).isDisplayed());
-		Thread.sleep(3000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 
 	}
 

@@ -10,9 +10,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
 
 public class Tc12AddProductsInCart {
 	private WebDriver driver;
@@ -27,16 +30,10 @@ public class Tc12AddProductsInCart {
 	}
 
 	@Test
-	public void SearchPage() throws InterruptedException {
+	public void ProductIn_CartPage() {
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
-
+		Assert.assertEquals(ActualHomePageTitle,expectedHomePageTitle,"Home Page not visible");
 		//Click product button
 		driver.findElement(By.xpath("//a[@href='/products']")).click();
 
@@ -62,47 +59,32 @@ public class Tc12AddProductsInCart {
 
 		// Verify both products are added to Cart
 		WebElement VerifyProduct1=driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[2]"));
-
-		if (VerifyProduct1.getText().contains("Blue Top")) {
-			System.out.println("1st Product is displayed in cart page)");
-		} else {
-			System.out.println("1st Product is not displayed in cart page");
-		}
+		Assert.assertTrue(VerifyProduct1.getText().contains("Blue Top"),"1st Product is not displayed in cart page");
+		
 		WebElement VerifyProduct2=driver.findElement(By.xpath("//*[@id=\"product-3\"]/td[2]"));
-
-		if (VerifyProduct2.getText().contains("Sleeveless Dress")) {
-			System.out.println("2nd Product is displayed in cart page)");
-		} else {
-			System.out.println("2nd Product is not displayed in cart page");
-		}
+		Assert.assertTrue(VerifyProduct2.getText().contains("Sleeveless Dress"),"2nd Product is not displayed in cart page");
+		
 
 		// Verify their prices, quantity and total price
 		WebElement productPrice1 = driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[3]"));
 		WebElement productQuantity1 = driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[4]"));
 		WebElement productTotalPrice1 = driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[5]"));
-		Thread.sleep(3000);
-		if (productPrice1.isDisplayed() && productQuantity1.isDisplayed() && productTotalPrice1.isDisplayed()) {
-			System.out.println("product1 price, quantity and total price are visibile");
-		} else {
-			System.out.println("product1 price, quantity and total price are Not visible");
-		}
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
+		Assert.assertTrue(productPrice1.isDisplayed() && productQuantity1.isDisplayed() && productTotalPrice1.isDisplayed(), "product1 price, quantity and total price are Not visible");
+
 
 		// Verify their prices, quantity and total price
 		WebElement productPrice2 = driver.findElement(By.xpath("//*[@id=\"product-3\"]/td[3]"));
 		WebElement productQuantity2 = driver.findElement(By.xpath("//*[@id=\"product-3\"]/td[4]"));
 		WebElement productTotalPrice2 = driver.findElement(By.xpath("//*[@id=\"product-3\"]/td[5]"));
-		Thread.sleep(3000);
-		if (productPrice2.isDisplayed() && productQuantity2.isDisplayed() && productTotalPrice2.isDisplayed()) {
-			System.out.println("product2 price, quantity and total price are visibile");
-		} else {
-			System.out.println("product2 price, quantity and total price are Not visible");
-		}
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
+		Assert.assertTrue(productPrice2.isDisplayed() && productQuantity2.isDisplayed() && productTotalPrice2.isDisplayed(), "product2 price, quantity and total price are Not visible");
 
 
 	}
 
 	@AfterTest	public void tearDown() {
-driver.quit();
+		driver.quit();
 
 	}
 }

@@ -15,6 +15,9 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import PageFiles.LoginPageTc2;
+import PageFiles.MainPage;
+
 public class Tc16PlaceOrderLoginBeforeCheckout {
 	private WebDriver driver;
 	private MainPage mainPage;
@@ -29,15 +32,11 @@ public class Tc16PlaceOrderLoginBeforeCheckout {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void LoginUserTest() throws InterruptedException {
+	public void LoginUserTest() {
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
+		Assert.assertEquals(ActualHomePageTitle, expectedHomePageTitle, "Failed to Land on Home Page");
+
 
 		mainPage.clickSignupLoginButton();
 		Assert.assertTrue(loginPage.loginToYourAccountVisible());
@@ -49,12 +48,8 @@ public class Tc16PlaceOrderLoginBeforeCheckout {
 
 		//Verify ' Logged in as username' at top
 		WebElement loggedInUserName=driver.findElement(By.xpath("/html/body/header/div/div/div/div[2]/div/ul/li[10]/a"));
-		if(loggedInUserName.isDisplayed()) {
-			System.out.println("Logged In as UserName is visible");
-		}
-		else {
-			System.out.println("Logged In as UserName Not Visible");
-		}
+		Assert.assertTrue(loggedInUserName.isDisplayed(),"Logged In as UserName Not Visible");
+
 
 
 		//1st product Add to Cart
@@ -72,11 +67,7 @@ public class Tc16PlaceOrderLoginBeforeCheckout {
 
 		//Verify that cart page is displayed
 		WebElement CartPage= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[@class='active']")));
-		if (CartPage.isDisplayed()) {
-			System.out.println("Cart page is displayed");
-		} else {
-			System.out.println("Cart page is Not displayed");
-		}
+		Assert.assertTrue(CartPage.isDisplayed(),"Cart page is Not displayed");
 
 		driver.findElement(By.xpath("//a[@class='btn btn-default check_out']")).click();
 
@@ -115,20 +106,13 @@ public class Tc16PlaceOrderLoginBeforeCheckout {
 
 		//Verify success message 'Your order has been placed successfully!'
 		WebElement OrderSuccessMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Congratulations! Your order has been confirmed!']")));
-		if (OrderSuccessMessage.isDisplayed()) {
-			System.out.println("Success message 'Your order has been placed successfully!' is visible");
-		} else {
-			System.out.println("Success message is not visible");
-		}	
+		Assert.assertTrue(OrderSuccessMessage.isDisplayed(),"Success message is not visible");
+		
 		driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
 
 		WebElement DeleteMessage=driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div"));
-		if(DeleteMessage.isDisplayed()) {
-			System.out.println("ACCOUNT DELETED!");
-		}
-		else {
-			System.out.println("ACCOUNT DELETED! not visible");
-		}
+		Assert.assertTrue(DeleteMessage.isDisplayed(),"ACCOUNT DELETED! not visible");
+		
 		//click 'Continue' button
 		driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
 

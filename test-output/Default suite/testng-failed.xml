@@ -3,13 +3,24 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Project1.Tc1Registration_page">
+      <class name="TestCase.testcaseforallcasesTest">
         <methods>
-          <include name="registerUserTest"/>
+          <include name="SubscriptionHp"/>
+          <include name="LoginUserInValidData"/>
+          <include name="TestCase_page"/>
+          <include name="Product_detailsPage"/>
+          <include name="RegisUserWithExistsEmail"/>
+          <include name="Product_Cart"/>
+          <include name="SubscriptionCartpg"/>
+          <include name="registration_testCasesTest"/>
+          <include name="LoginUserValidData"/>
+          <include name="ContactUs_form"/>
           <include name="setUp"/>
-          <include name="tearDown"/>
+          <include name="LogOut"/>
+          <include name="Search_Product"/>
+          <include name="teadDown"/>
         </methods>
-      </class> <!-- Project1.Tc1Registration_page -->
+      </class> <!-- TestCase.testcaseforallcasesTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

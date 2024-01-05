@@ -10,9 +10,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.LoginPageTc2;
+import PageFiles.MainPage;
 
 public class Tc20SearchProductsandVerifyCartAfterLogin {
 	private WebDriver driver;
@@ -29,15 +33,11 @@ public class Tc20SearchProductsandVerifyCartAfterLogin {
 	}
 
 	@Test
-	public void SearchPage() throws InterruptedException {
+	public void SearchPageVerify() {
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
+		Assert.assertEquals(ActualHomePageTitle, expectedHomePageTitle, "Failed to Land on Home Page");
+
 		//Click on 'Products' button
 		driver.findElement(By.xpath("//a[@href='/products']")).click();
 
@@ -45,13 +45,7 @@ public class Tc20SearchProductsandVerifyCartAfterLogin {
 
 		String expectedproductTitle= "Automation Exercise - All Products";
 		String ActualproductTitle=driver.getTitle();
-
-		if(ActualproductTitle.equals(expectedproductTitle)) {
-			System.out.println("Navigated to all Products page successfully.");
-		}
-		else {
-			System.out.println("Failed to Navigate to all Products page.");
-		}
+		Assert.assertEquals(ActualproductTitle,expectedproductTitle, "Failed to Navigate to all Products page.");
 
 		//Enter product name in search input and click search button
 		WebElement searchP=driver.findElement(By.xpath("//input[@name='search']"));
@@ -64,20 +58,12 @@ public class Tc20SearchProductsandVerifyCartAfterLogin {
 				.pollingEvery(Duration.ofMillis(500))
 				.ignoring(NoSuchElementException.class);
 		WebElement SearchProductList=wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@class='title text-center']")));
-		if (SearchProductList.isDisplayed()) {
-			System.out.println("Search Products is visible");
-		} else {
-			System.out.println("Search Products is not visible");
-		}
+		Assert.assertTrue(SearchProductList.isDisplayed(),"Search Products is not visible");
+
 		//Verify all the products related to search are visible
 
 		WebElement SearchedProductVisibile=driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[1]/p"));
-		if(SearchedProductVisibile.getText().equals(SearchItem)) {
-
-			System.out.println("Search Product item is visible");
-		} else {
-			System.out.println("Search Product item is not visible");
-		}
+		Assert.assertTrue(SearchedProductVisibile.getText().equals(SearchItem),"Search Product item is not visible");
 		//Add those products to cart
 		driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[1]/a")).click();
 
@@ -85,30 +71,21 @@ public class Tc20SearchProductsandVerifyCartAfterLogin {
 		viewCart.click();
 		// Verify that products are visible in cart
 		WebElement ProductAddedInCart=driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[2]"));
+		Assert.assertTrue(ProductAddedInCart.getText().contains(SearchItem),"Product is not displayed in cart page with the exact search");
 
-		if (ProductAddedInCart.getText().contains(SearchItem)) {
-			System.out.println("Product is displayed in cart page with the exact search");
-		} else {
-			System.out.println("Product is not displayed in cart page with the exact search");
-		}
-		
 		//Click 'Signup / Login' button and submit login details
 		driver.findElement(By.xpath("//a[@href='/login']//parent::li")).click();
 		loginPage.enterEmailAndPassWithValidData("SaritaPadhi@gmail.com", "12345678");
 		loginPage.clickLoginButton();
-		
+
 		//Again, go to Cart page
 		driver.findElement(By.xpath("//a[@href='/view_cart']//parent::li")).click();
-		
+
 		//Verify that those products are visible in cart after login as well
 		WebElement ProductAddedInCart1=driver.findElement(By.xpath("//*[@id=\"product-1\"]/td[2]"));
 
-		if (ProductAddedInCart1.getText().contains(SearchItem)) {
-			System.out.println("Product is displayed in cart page with the exact search");
-		} else {
-			System.out.println("Product is not displayed in cart page with the exact search");
-		}
-		
+		Assert.assertTrue(ProductAddedInCart1.getText().contains(SearchItem),"Product is not displayed in cart page with the exact search");
+
 	}
 	@AfterTest	
 	public void tearDown() {

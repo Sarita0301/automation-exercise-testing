@@ -1,5 +1,7 @@
 package Project1;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,6 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.LoginPageTc2;
+import PageFiles.MainPage;
 
 public class Tc2LoginUserWithValidData {
 	private WebDriver driver;
@@ -22,7 +27,7 @@ public class Tc2LoginUserWithValidData {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void LoginUserTest() throws InterruptedException {
+	public void LoginUserTest() {
 		mainPage.navigateToHomePage("https://automationexercise.com/");
 
 		Assert.assertTrue(mainPage.isHomePageVisible());
@@ -40,7 +45,7 @@ public class Tc2LoginUserWithValidData {
 		//Verify that 'ACCOUNT DELETED!' is visible
 		driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
 		System.out.println("Account deleted is visible:"+driver.findElement(By.xpath("//*[text()='Account Deleted!']")).isDisplayed()); 
-		Thread.sleep(3000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 	}
 	@AfterTest	public void tearDown() {
 		driver.quit();

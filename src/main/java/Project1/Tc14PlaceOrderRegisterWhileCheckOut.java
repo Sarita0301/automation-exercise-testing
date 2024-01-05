@@ -10,9 +10,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
+import PageFiles.SignupPAge;
 
 public class Tc14PlaceOrderRegisterWhileCheckOut {
 	private WebDriver driver;
@@ -30,16 +34,12 @@ public class Tc14PlaceOrderRegisterWhileCheckOut {
 
 
 	@Test
-	public void PlaceOrder() throws InterruptedException {
+	public void PlaceOrder() {
 
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
+		Assert.assertEquals(ActualHomePageTitle,expectedHomePageTitle,"Home Page not visible");
+
 		//1st product Add to Cart
 		driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[2]/div[1]/div[2]/div/div[1]/div[1]/a")).click();
 		System.out.println("----");
@@ -53,12 +53,8 @@ public class Tc14PlaceOrderRegisterWhileCheckOut {
 		CartButton.click();
 
 		WebElement CartPgDisplaed=driver.findElement(By.xpath("//*[@class='active']"));
-		if(CartPgDisplaed.isDisplayed()) {
-			System.out.println("Cart Page is visible");
-		}
-		else {
-			System.out.println("Cart Page not Visible");
-		}
+		Assert.assertTrue(CartPgDisplaed.isDisplayed(),"Cart Page not visible");
+
 
 		WebElement ProceedToCheckOut=driver.findElement(By.xpath("//*[@class='btn btn-default check_out']"));
 		ProceedToCheckOut.click();
@@ -99,7 +95,7 @@ public class Tc14PlaceOrderRegisterWhileCheckOut {
 		driver.findElement(By.xpath("//input[@id='mobile_number']")).sendKeys("2345678901");
 		driver.findElement(By.xpath("//button[@type='submit' and text()]")).click();
 
-		Thread.sleep(3000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 		//Verify 'ACCOUNT CREATED!' and click 'Continue' button
 
 		System.out.println("Account Created is visible:"+driver.findElement(By.xpath("//h2[@class='title text-center']")).isDisplayed());
@@ -107,12 +103,7 @@ public class Tc14PlaceOrderRegisterWhileCheckOut {
 
 		//Verify ' Logged in as username' at top
 		WebElement loggedInUserName=driver.findElement(By.xpath("/html/body/header/div/div/div/div[2]/div/ul/li[10]/a"));
-		if(loggedInUserName.isDisplayed()) {
-			System.out.println("Logged In as UserName is visible");
-		}
-		else {
-			System.out.println("Logged In as UserName Not Visible");
-		}
+		Assert.assertTrue(loggedInUserName.isDisplayed(),"Logged In as UserName Not Visible");
 
 		//Click 'Cart' button
 		driver.findElement(By.xpath("//a[@href='/view_cart']//parent::li")).click();
@@ -154,25 +145,16 @@ public class Tc14PlaceOrderRegisterWhileCheckOut {
 		PayConfirmorderButton.click();
 
 		//Verify success message 'Your order has been placed successfully!'
-        WebElement OrderSuccessMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Congratulations! Your order has been confirmed!']")));
-        if (OrderSuccessMessage.isDisplayed()) {
-            System.out.println("Success message 'Your order has been placed successfully!' is visible");
-        } else {
-            System.out.println("Success message is not visible");
-        }	
+		WebElement OrderSuccessMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='Congratulations! Your order has been confirmed!']")));
+		Assert.assertTrue(OrderSuccessMessage.isDisplayed(),"Success message is not visible");
 
-        
-        driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
-        
-        WebElement DeleteMessage=driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div"));
-        if(DeleteMessage.isDisplayed()) {
-        	System.out.println("ACCOUNT DELETED!");
-        }
-        else {
-        	System.out.println("ACCOUNT DELETED! not visible");
-        }
-        
-        driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
+
+		driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
+
+		WebElement DeleteMessage=driver.findElement(By.xpath("//*[@id=\"form\"]/div/div/div"));
+		Assert.assertTrue(DeleteMessage.isDisplayed(),"ACCOUNT DELETED! not visible");
+		
+		driver.findElement(By.xpath("//a[@data-qa='continue-button']")).click();
 
 
 	}

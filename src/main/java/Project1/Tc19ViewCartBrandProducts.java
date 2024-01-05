@@ -4,9 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
 
 public class Tc19ViewCartBrandProducts {
 	private WebDriver driver;
@@ -20,19 +23,14 @@ public class Tc19ViewCartBrandProducts {
 	}
 
 	@Test
-	public void CartBrand() throws InterruptedException {
+	public void CartBrand()  {
 		//Click on 'Products' button
 		driver.findElement(By.xpath("//a[@href='/products']")).click();
 
 		//Verify that Brands are visible on left side bar
 		WebElement BrandsVisbile=driver.findElement(By.xpath("//*[@class='brands_products']"));
-		if(BrandsVisbile.isDisplayed()) {
-			System.out.println("Brands are visible on left side bar");
-		}
-		else {
-			System.out.println("Brands are not visible on left side bar");
-		}
-
+		Assert.assertTrue(BrandsVisbile.isDisplayed(),"Brands are not visible on left side bar");
+		
 		//
 		driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[1]/div/div[3]/div/ul/li[5]/a")).click();
 

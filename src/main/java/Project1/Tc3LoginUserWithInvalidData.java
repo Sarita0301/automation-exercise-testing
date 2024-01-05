@@ -1,12 +1,18 @@
 package Project1;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.LoginPageTc2;
+import PageFiles.MainPage;
 
 public class Tc3LoginUserWithInvalidData {
 	private WebDriver driver;
@@ -22,7 +28,7 @@ public class Tc3LoginUserWithInvalidData {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void LoginUserTestInvalid() throws InterruptedException {
+	public void LoginUserTestInvalid() {
 		mainPage.navigateToHomePage("https://automationexercise.com/");
 
 		Assert.assertTrue(mainPage.isHomePageVisible());
@@ -36,8 +42,10 @@ public class Tc3LoginUserWithInvalidData {
 		loginPage.clickLoginButton();
 
 		//Verify error 'Your email or password is incorrect!' is visible
-		System.out.println("Error is visible:"+driver.findElement(By.xpath("//p[text()='Your email or password is incorrect!']")).isDisplayed());
-		Thread.sleep(3000);
+		WebElement ErrorMassage=driver.findElement(By.xpath("//p[text()='Your email or password is incorrect!']"));
+		Assert.assertTrue(ErrorMassage.isDisplayed(),"Error Massage is not visible");
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 	}
 	@AfterTest	public void tearDown() {
 		driver.quit();

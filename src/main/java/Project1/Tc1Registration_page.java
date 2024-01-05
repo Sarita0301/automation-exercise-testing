@@ -1,5 +1,7 @@
 package Project1;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,8 +10,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import Project1.MainPage;
-import Project1.SignupPAge;
+import PageFiles.MainPage;
+import PageFiles.SignupPAge;
 
 public class Tc1Registration_page {
 	private WebDriver driver;
@@ -25,13 +27,13 @@ public class Tc1Registration_page {
 		System.out.println(driver.getTitle());
 	}
 	@Test
-	public void registerUserTest() throws InterruptedException {
+	public void registerUserTest() {
 		mainPage.navigateToHomePage("https://automationexercise.com/");
 
-		Assert.assertTrue(mainPage.isHomePageVisible());
+		Assert.assertTrue(mainPage.isHomePageVisible(),"Home Page Not Visible");
 
 		mainPage.clickSignupLoginButton();
-		Assert.assertTrue(signupPage.isNewUserSignupVisible());
+		Assert.assertTrue(signupPage.isNewUserSignupVisible(),"New User singup form is not visible");
 
 
 		// Fill out the signup form
@@ -61,15 +63,15 @@ public class Tc1Registration_page {
 		driver.findElement(By.xpath("//input[@id='mobile_number']")).sendKeys("730333379");
 		driver.findElement(By.xpath("//button[@type='submit' and text()]")).click();
 
-		Thread.sleep(3000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3000));
 		//Verify that 'ACCOUNT CREATED!' is visible
 
 		System.out.println("Account Created is visible:"+driver.findElement(By.xpath("//h2[@class='title text-center']")).isDisplayed());
 		driver.findElement(By.xpath("//a[@class='btn btn-primary']")).click();
 		System.out.println("User name is visible:"+driver.findElement(By.xpath("//a[text()=' Logged in as ']")).isDisplayed());
-		//driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
-		//System.out.println("Account deleted is visible:"+driver.findElement(By.xpath("//*[text()='Account Deleted!']")).isDisplayed()); 
-		//	    
+		driver.findElement(By.xpath("//a[@href='/delete_account']")).click();
+		System.out.println("Account deleted is visible:"+driver.findElement(By.xpath("//*[text()='Account Deleted!']")).isDisplayed()); 
+			    
 
 	}
 	@AfterTest	public void tearDown() {

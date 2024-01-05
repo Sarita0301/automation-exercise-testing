@@ -11,9 +11,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
 
 public class Tc10VerifySubscriptionHomePage {
 	private WebDriver driver;
@@ -28,15 +31,11 @@ public class Tc10VerifySubscriptionHomePage {
 	}
 
 	@Test
-	public void SearchPage() throws InterruptedException {
+	public void Subscription_Home_pg()  {
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
+		Assert.assertEquals(ActualHomePageTitle, expectedHomePageTitle, "Failed to Land on Home Page");
+
 		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -47,11 +46,8 @@ public class Tc10VerifySubscriptionHomePage {
 				.pollingEvery(Duration.ofMillis(500))
 				.ignoring(NoSuchElementException.class);
         WebElement subscriptionText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='Subscription']")));
-        if (subscriptionText.isDisplayed()) {
-            System.out.println("Text 'SUBSCRIPTION' is visible in the footer");
-        } else {
-            System.out.println("Text 'SUBSCRIPTION' is not visible in the footer");
-        }
+        Assert.assertTrue(subscriptionText.isDisplayed(), "Text 'SUBSCRIPTION' is not visible in the footer");
+
 
         // Enter email address in input and click arrow button
         WebElement emailInput = driver.findElement(By.xpath("//input[@id='susbscribe_email']"));
@@ -62,11 +58,8 @@ public class Tc10VerifySubscriptionHomePage {
 
         // Verify success message 'You have been successfully subscribed!' is visible
         WebElement successMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()='You have been successfully subscribed!']")));
-        if (successMessage.isDisplayed()) {
-            System.out.println("Success message 'You have been successfully subscribed!' is visible");
-        } else {
-            System.out.println("Success message is not visible");
-        }	}
+        Assert.assertTrue(successMessage.isDisplayed(), "Success message 'You have been successfully subscribed!' is not visible");
+	}
 
 	@AfterTest	
 	public void tearDown() {

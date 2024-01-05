@@ -10,9 +10,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import PageFiles.MainPage;
 
 public class Tc17RemoveProductsFromCart {
 	private WebDriver driver;
@@ -26,15 +29,11 @@ public class Tc17RemoveProductsFromCart {
 	}
 
 	@Test
-	public void SearchPage() throws InterruptedException {
+	public void SearchPage() {
 		String expectedHomePageTitle="Automation Exercise";
 		String ActualHomePageTitle= driver.getTitle();
-		if(ActualHomePageTitle.equals(expectedHomePageTitle)) {
-			System.out.println("Successfully landed to Home Page");
-		}
-		else {
-			System.out.println("Failed to Land on Home Page");
-		}
+		Assert.assertEquals(ActualHomePageTitle, expectedHomePageTitle, "Failed to Land on Home Page");
+
 		
 		//1st product Add to Cart
 		driver.findElement(By.xpath("/html/body/section[2]/div[1]/div/div[2]/div/div[2]/div/div[1]/div[1]/a")).click();
@@ -52,11 +51,7 @@ public class Tc17RemoveProductsFromCart {
 
 		//Verify that cart page is displayed
 		WebElement CartPage=driver.findElement(By.xpath("//li[@class='active']"));
-		if (CartPage.isDisplayed()) {
-			System.out.println("Cart page is displayed");
-		} else {
-			System.out.println("Cart page is Not displayed");
-		}
+		Assert.assertTrue(CartPage.isDisplayed(),"Cart page is Not displayed");
 
 		//Click 'X' button corresponding to particular product
 		WebElement Xbutton=driver.findElement(By.xpath("//i[@class='fa fa-times']"));
